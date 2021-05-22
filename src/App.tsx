@@ -1,25 +1,35 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header';
+import Image from './components/Image';
+import 'normalize.css';
+import Logo from './components/Logo';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { MainTheme } from './theme';
+import './fonts.css';
+import Button from './components/Button';
+import StartButtons from './components/StartButtons';
+import More from './components/More';
+
+const GlobalStyles = createGlobalStyle`
+  :root {
+    font-size: ${MainTheme.rootSize}px;
+  }
+`
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <GlobalStyles />
+    <ThemeProvider theme={MainTheme}>
+      <Header>
+        <Logo />
+        <Image src="car.png"/>
+        <StartButtons />
+       <More />
+      </Header>
+    </ThemeProvider>
+    </>
   );
 }
 
