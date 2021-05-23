@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface ButtonProps {
   variant?: 'main' | 'secondary';
+  onClick?: () => void,
 }
 
 const StyledButton = styled.button<ButtonProps>`

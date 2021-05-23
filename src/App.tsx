@@ -10,6 +10,7 @@ import './fonts.css';
 import Button from './components/Button';
 import StartButtons from './components/StartButtons';
 import More from './components/More';
+import Parallax from './components/Parallax';
 
 const GlobalStyles = createGlobalStyle`
   :root {
@@ -24,7 +25,9 @@ function App() {
     <ThemeProvider theme={MainTheme}>
       <Header>
         <Logo />
-        <Image src="car.png"/>
+        <Parallax lockY={true} intensity={2}>
+          <Image src="car.png"/>
+        </Parallax>
         <StartButtons />
        <More />
       </Header>

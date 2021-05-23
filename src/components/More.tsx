@@ -26,7 +26,6 @@ const SvgText = function({children, size}: PropsWithChildren<SvgTextProps>) {
     if (!svg || !text) return;
 
     const rect = text.getBBox();
-    console.log(rect);
     svg.setAttribute("width", rect.width.toString());
     svg.setAttribute("height", rect.height.toString());
 
