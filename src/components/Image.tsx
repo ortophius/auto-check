@@ -1,15 +1,28 @@
 import styled from "styled-components";
 
-const StyledImage = styled.img``;
-
 interface ImageProps {
-  src: string,
+  src?: string,
+  width?: string,
+  height?: string,
+  addStyles?: string,
+  rounded?: boolean
 }
 
-const Image = function(props: ImageProps) {
+const StyledImage = styled.img<ImageProps>`
+  ${({src}) => (!src) ? 'background: linear-gradient(159.62deg, #1F88D4 8.39%, #4CA7E9 91.8%);' : ''}
+  ${({ width, height }) => {
+    return(
+      `${(width) ? `min-width: ${width};` : ''}
+       ${(height) ? `min-height: ${height};` : ''}`
+    )
+  }}
+  ${({rounded}) => (rounded) ? 'border-radius: 3rem 3rem' : ''}
+`;
+
+const Image = function({ src, width, height, rounded = true }: ImageProps) {
   return(
     <>
-      <StyledImage src={`${process.env.PUBLIC_URL}${props.src}`} />
+      <StyledImage {...(src) ? {src}  : {}} {...{width, height, rounded}} />
     </>
   )
 }

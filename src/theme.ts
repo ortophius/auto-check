@@ -5,6 +5,10 @@ const MainTheme: DefaultTheme = {
   colors: {
     main: '#2289d6',
     secondary: '#fff',
+    link: {
+      main: '#1f88d4',
+      secondary: '#fff'
+    }
   },
 };
 

@@ -11,10 +11,20 @@ import Button from './components/Button';
 import StartButtons from './components/StartButtons';
 import More from './components/More';
 import Parallax from './components/Parallax';
+import Popup from './components/Popup';
+import Tabs from './components/Tabs';
+import Tab from './components/Tab';
+import LoginPopup from './modules/LoginPopup';
 
 const GlobalStyles = createGlobalStyle`
   :root {
     font-size: ${MainTheme.rootSize}px;
+  }
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
   }
 `
 
@@ -29,8 +39,9 @@ function App() {
           <Image src="car.png"/>
         </Parallax>
         <StartButtons />
-       <More />
+        <More />
       </Header>
+      <LoginPopup />
     </ThemeProvider>
     </>
   );
