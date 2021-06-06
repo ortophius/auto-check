@@ -6,6 +6,7 @@ interface LinkProps {
   href?: string,
   color?: 'main' | 'secondary',
   onClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void,
+  addStyles?: string | null,
 }
 
 const StyledLink = styled.a<LinkProps>`
@@ -14,10 +15,14 @@ const StyledLink = styled.a<LinkProps>`
     color: ${({color, theme}) => (color) ? theme.colors.link[color] : theme.colors.link.main};
     letter-spacing: 0.11em;
     text-decoration: none;
+    ${({addStyles}) => {
+      console.log(addStyles);
+      if (addStyles) return addStyles
+    }}
   }
 `;
 
-const Link = function({ size, href = '#', onClick, children, color }: PropsWithChildren<LinkProps>) {
+const Link = function({ size, href = '#', onClick, children, color, addStyles = null }: PropsWithChildren<LinkProps>) {
 
   const clickHandler = useCallback((e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (href === '#') e.preventDefault();
@@ -25,7 +30,7 @@ const Link = function({ size, href = '#', onClick, children, color }: PropsWithC
   }, [onClick, href])
 
   return (
-    <StyledLink {...{href, size, color}} onClick={clickHandler}>
+    <StyledLink {...{href, size, color, addStyles}} onClick={clickHandler}>
       { children }
     </StyledLink>
   )

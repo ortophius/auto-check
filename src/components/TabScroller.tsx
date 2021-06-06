@@ -17,6 +17,7 @@ const Scroller = styled.span<TabScrollerProps>`
     left: ${({ x }) => x}px;
     background-color: ${({ theme }) => theme.colors.main};
     border-radius: 10rem;
+    transition: 0.1s;
 `;
 
 const TabScroller = function({x = 0, width = 10, children}: PropsWithChildren<TabScrollerProps>) {

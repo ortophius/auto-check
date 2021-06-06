@@ -1,4 +1,4 @@
-import { PropsWithChildren, useCallback, useEffect, useRef, useState } from "react";
+import { PropsWithChildren, ReactChild, useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import TabScroller, { TabScrollerProps } from "./TabScroller";
 import Tab, { TabPropsWithoutChildren } from './Tab';
@@ -7,7 +7,7 @@ import React from 'react';
 interface TabsProps {
   index?: string,
   currentIndex?: number,
-  onChange: (index: number) => any,
+  onChange: (index: string) => any,
 }
 
 interface TabInfo {
@@ -24,6 +24,11 @@ interface TabsInfo {
   [key: string]: TabInfo
 }
 
+interface ScrollerProps {
+  x: number,
+  width: number,
+}
+
 const List = styled.ul`
   position: relative;
   display: flex;
@@ -35,38 +40,40 @@ const List = styled.ul`
   z-index: 1;
 `;
 
-const Scroller = styled.span`
-
-`;
-
 const Tabs = function({ index = '0', children, onChange }: PropsWithChildren<TabsProps>) {
-  // todo: add onClick handlers via React.CloneElement()
-  const [indexes, setIndexes] = useState<number[]>([]);
+  const [processedChildren, setProcessedChildren] = useState<React.ReactNode>([]);
+  const [indexes, setIndexes] = useState<string[]>([]);
   const [scrollerProps, setScrollerProps] = useState<TabScrollerProps>({});
   const [tabsSize, setTabsSize] = useState<TabsInfo>({});
   const tabsRef = useRef<HTMLUListElement>(null);
-  const onTabClick = useCallback((index: number) => {
 
-  }, []);
+  const handleScrollerMove = useCallback((x: number, width: number) => {
+    setScrollerProps({ x, width });
+  }, [tabsSize]);
+  
+  const onTabClick = useCallback((index: string) => {
+    onChange(index);
+  }, [onChange]);
 
   useEffect(() => {
     if (!tabsRef.current || !tabsRef.current.children) return;
 
-    const tabsContainer = tabsRef.current;
-    const containerRect = tabsContainer.getBoundingClientRect();
-    const extractedIndexes: number[] = [];
-    React.Children.forEach(children, child => {
+    const extractedIndexes: string[] = [];
+    const processedChildren = React.Children.map(children, child => {
       if (!React.isValidElement(child)) return null;
       if (child.type !== Tab) return null;
 
-      let index = 0;
+      let childIndex = '0';
 
-      if ((child.props as TabPropsWithoutChildren).index) index = child.props.index;
+      if ((child.props as TabPropsWithoutChildren).index) childIndex = child.props.index;
 
-      extractedIndexes.push(index);
+      extractedIndexes.push(childIndex);
+
+      return React.cloneElement(child,  { onClick: onTabClick, active: (index === childIndex) });
     })
+    setProcessedChildren(processedChildren);
     setIndexes(extractedIndexes);
-  }, [children]);
+  }, [children, onTabClick]);
 
   useEffect(() => {
     if (!tabsRef.current || !indexes[0]) return;
@@ -95,18 +102,26 @@ const Tabs = function({ index = '0', children, onChange }: PropsWithChildren<Tab
     if (Object.keys(tabsSize).indexOf(index) === -1) return;
     
     const tabInfo = tabsSize[index];
-    
-    setScrollerProps({
-      x: tabInfo.position.x,
-      width: tabInfo.dimentions.width,
-    });
 
-  }, [index, indexes, tabsSize]);
+    handleScrollerMove(tabInfo.position.x, tabInfo.dimentions.width);
+
+  }, [index]);
+
+  useEffect(() => {
+    const childIndex = indexes.indexOf(index);
+
+    if (childIndex === -1 || !tabsSize[index]) return;
+
+    const x = tabsSize[index].position.x;
+    const width = tabsSize[index].dimentions.width;
+
+    handleScrollerMove(x, width);
+  }, [index, handleScrollerMove, indexes, tabsSize]);
 
   return(
   <TabScroller {...scrollerProps}>
     <List ref={tabsRef}>
-    { children }
+    { processedChildren }
     </List>
   </TabScroller>
   )

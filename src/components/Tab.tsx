@@ -7,7 +7,7 @@ export interface TabPropsWithoutChildren {
   index?: string,
   active?: boolean,
   size?: 'sm' | 'md' | 'lg',
-  onClick?: (index: string) => any,
+  onClick?: (i: string) => void,
 }
 
 type TabProps = PropsWithChildren<TabPropsWithoutChildren>;
@@ -29,9 +29,13 @@ const Tab = forwardRef<HTMLLIElement, TabProps>(({ index = '0', active = false, 
     onClick(index);
   }, [index, onClick]);
 
+  const linkStyles = `
+    transition: color 0.1s;
+  `;
+
   return (
-    <StyledTab ref={ref} onClick={clickHandler}>
-      <Link color={(active) ? 'secondary' : 'main'}>
+    <StyledTab ref={ref}>
+      <Link color={(active) ? 'secondary' : 'main'} onClick={clickHandler} addStyles={linkStyles}>
         { children }
       </Link>
     </StyledTab>

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import styled from "styled-components";
 import Image from '../components/Image';
 import Popup from "../components/Popup";
@@ -16,12 +16,15 @@ interface LoginPopupProps {
 }
 
 const LoginPopup = function( { image }: LoginPopupProps ) {
+
+  const [tabIndex, setTabIndex] = useState('0');
+
   return (
     <Popup>
       <LoginWrapper>
         <div>
-          <Tabs onChange={() => {}}>
-            <Tab index='0' active>Авторизация</Tab>
+          <Tabs onChange={setTabIndex} index={tabIndex} >
+            <Tab index='0'>Авторизация</Tab>
             <Tab index='1'>Регистрация</Tab>
           </Tabs>
         </div>
