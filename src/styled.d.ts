@@ -9,6 +9,9 @@ declare module 'styled-components' {
       link: {
         main: string,
         secondary?: string,
+      },
+      text: {
+        main: string,
       }
     }
   }

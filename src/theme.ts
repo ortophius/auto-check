@@ -8,6 +8,9 @@ const MainTheme: DefaultTheme = {
     link: {
       main: '#1f88d4',
       secondary: '#fff'
+    },
+    text: {
+      main: "#0f0f0f",
     }
   },
 };

@@ -38,6 +38,14 @@ const List = styled.ul`
   list-style-type: none;
   padding-left: 0;
   z-index: 1;
+  margin: 0;
+  & > li {
+    margin-left: 3.2rem;
+  }
+  
+  & > li:first-child {
+    margin-left: 0;
+  }
 `;
 
 const Tabs = function({ index = '0', children, onChange }: PropsWithChildren<TabsProps>) {
