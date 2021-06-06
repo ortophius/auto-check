@@ -16,7 +16,6 @@ const StyledLink = styled.a<LinkProps>`
     letter-spacing: 0.11em;
     text-decoration: none;
     ${({addStyles}) => {
-      console.log(addStyles);
       if (addStyles) return addStyles
     }}
   }

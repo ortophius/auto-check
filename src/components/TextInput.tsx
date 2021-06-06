@@ -6,6 +6,8 @@ interface TextInputProps {
   placeholder?: string,
   disabled?: boolean;
   value?: string,
+  password?: boolean;
+  onChange?: (e: React.FormEvent<HTMLInputElement>) => void,
 }
 
 const InputField = styled.input`
@@ -36,22 +38,26 @@ const InputIcon = styled.img`
   height: 2.4rem;
 `;
 
-const TextInput = function({ icon, placeholder = '', disabled = false,  value = ''}: TextInputProps) {
-  const input = useRef<HTMLInputElement>(null);
+const TextInput = function({ icon, placeholder = '', disabled = false,  value = '', password = false, onChange}: TextInputProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const iconRef = useRef<HTMLImageElement>(null);
+
+  const type = (password) ? 'password' : 'text';
 
   const containerClickHandler = useCallback((e: React.MouseEvent) => {
-    if (!input || !input.current) return;
+    if (!inputRef || !inputRef.current) return;
+    if (!iconRef || !iconRef.current) return;
 
-    e.preventDefault();
-    
-    input.current.focus();
-  }, [input]);
+    if (e.target === iconRef.current) e.preventDefault();
+
+    inputRef.current.focus();
+  }, []);
 
   return(
     <InputContainer onMouseDown={containerClickHandler}>
       { icon &&
-      <InputIcon src={`${process.env.PUBLIC_URL}/${icon}`}/> }
-      <InputField {...{ placeholder }} ref={input} />
+      <InputIcon src={`${process.env.PUBLIC_URL}/${icon}`} ref={iconRef}/> }
+      <InputField {...{ value, placeholder, disabled, type, onChange}} ref={inputRef} />
     </InputContainer>
   )
 }
