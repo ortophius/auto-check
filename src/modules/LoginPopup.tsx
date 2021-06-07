@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import styled from "styled-components";
 import H from "../components/H";
 import Image from '../components/Image';
+import Link from "../components/Link";
 import Popup from "../components/Popup";
 import Tab from "../components/Tab";
 import Tabs from "../components/Tabs";
@@ -45,7 +46,18 @@ const FormButtons = styled.div`
   align-self: end;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
+
+const submitStyles = `
+  color: #0f0f0f;
+`;
+
+const losePasswordStyles = `
+  &:hover {
+    text-decoration: underline;
+  }
+`
 
 const LoginPopup = function( { image }: LoginPopupProps ) {
 
@@ -100,6 +112,10 @@ const LoginPopup = function( { image }: LoginPopupProps ) {
               <TextInput icon="key.svg" placeholder="Введите пароль" value={password} onChange={handlePasswordChange} password />
             </LoginInputsWrapper>
           </LoginForm>
+          <FormButtons>
+            <Link size="2rem" addStyles={submitStyles}>Войти</Link>
+            <Link addStyles={losePasswordStyles}>Забыли пароль?</Link>
+          </FormButtons>
         </ContentDiv>
         <div>
           <Image width='100%' height='39.5rem' addStyles='border-radius'/>
