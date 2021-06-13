@@ -1,13 +1,17 @@
-import { useCallback, useRef } from "react";
+import { forwardRef, useCallback, useRef } from "react";
 import styled from "styled-components";
 
-interface TextInputProps {
+export interface TextInputProps {
   icon?: string,
   placeholder?: string,
   disabled?: boolean;
   value?: string,
   password?: boolean;
-  onChange?: (e: React.FormEvent<HTMLInputElement>) => void,
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  addStyles?: string,
+  ref?: React.ForwardedRef<HTMLInputElement>,
+  children?: React.ReactNode,
+  maxLength?: number,
 }
 
 const InputField = styled.input`
@@ -24,10 +28,11 @@ const InputField = styled.input`
   }
 `
 
-const InputContainer = styled.div`
+const InputContainer = styled.div<Pick<TextInputProps, 'addStyles'>>`
   position: relative;
   width: 100%;
   cursor: text;
+  ${({ addStyles }) =>  (addStyles) ? addStyles : ''}
 `;
 
 const InputIcon = styled.img`
@@ -38,7 +43,7 @@ const InputIcon = styled.img`
   height: 2.4rem;
 `;
 
-const TextInput = function({ icon, placeholder = '', disabled = false,  value = '', password = false, onChange}: TextInputProps) {
+const TextInput = function({ icon, placeholder = '', disabled = false,  value = '', password = false, addStyles, maxLength, onChange}: TextInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const iconRef = useRef<HTMLImageElement>(null);
 
@@ -54,10 +59,12 @@ const TextInput = function({ icon, placeholder = '', disabled = false,  value = 
   }, []);
 
   return(
-    <InputContainer onMouseDown={containerClickHandler}>
+    <InputContainer onMouseDown={containerClickHandler} {...{ addStyles }}>
       { icon &&
       <InputIcon src={`${process.env.PUBLIC_URL}/${icon}`} ref={iconRef}/> }
-      <InputField {...{ value, placeholder, disabled, type, onChange}} ref={inputRef} />
+      <InputField 
+        {...{ value, placeholder, disabled, type, maxLength, onChange}}
+        ref={inputRef} />
     </InputContainer>
   )
 }

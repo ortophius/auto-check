@@ -14,7 +14,7 @@ import Parallax from './components/Parallax';
 import Popup from './components/Popup';
 import Tabs from './components/Tabs';
 import Tab from './components/Tab';
-import LoginPopup from './modules/LoginPopup';
+import LoginPopup from './modules/Login/Login';
 
 const GlobalStyles = createGlobalStyle`
   :root {
