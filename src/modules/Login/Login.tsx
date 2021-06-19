@@ -142,7 +142,7 @@ const LoginPopup = function( { image }: LoginPopupProps ) {
             <LoginInputsWrapper>
               {/* <TextInput icon="phone.svg" placeholder="Введите номер телефона" addStyles={phoneInputStyles} /> */}
               <PhoneInput onChange={handlePhoneChange} value={phone} />
-              <TextInput icon="key.svg" placeholder="Введите пароль" password />
+              {/* <TextInput icon="key.svg" placeholder="Введите пароль" password /> */}
             </LoginInputsWrapper>
             <FormButtons>
               <Link size="2rem" addStyles={submitStyles}>Войти</Link>

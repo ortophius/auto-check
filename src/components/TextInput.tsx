@@ -1,5 +1,6 @@
 import { forwardRef, useCallback, useRef } from "react";
 import styled from "styled-components";
+import { mergeRefs } from "../utils";
 
 export interface TextInputProps {
   icon?: string,
@@ -7,7 +8,7 @@ export interface TextInputProps {
   disabled?: boolean;
   value?: string,
   password?: boolean;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  onChange?: ((e: React.ChangeEvent<HTMLInputElement>) => void) | (() => void)
   addStyles?: string,
   ref?: React.ForwardedRef<HTMLInputElement>,
   children?: React.ReactNode,
@@ -43,7 +44,7 @@ const InputIcon = styled.img`
   height: 2.4rem;
 `;
 
-const TextInput = function({ icon, placeholder = '', disabled = false,  value = '', password = false, addStyles, maxLength, onChange}: TextInputProps) {
+const TextInput = function({ icon, placeholder = '', disabled = false,  value = '', password = false, addStyles, maxLength, onChange}: TextInputProps, ref: React.ForwardedRef<HTMLInputElement>) {
   const inputRef = useRef<HTMLInputElement>(null);
   const iconRef = useRef<HTMLImageElement>(null);
 
@@ -64,9 +65,11 @@ const TextInput = function({ icon, placeholder = '', disabled = false,  value = 
       <InputIcon src={`${process.env.PUBLIC_URL}/${icon}`} ref={iconRef}/> }
       <InputField 
         {...{ value, placeholder, disabled, type, maxLength, onChange}}
-        ref={inputRef} />
+        ref={(node) => {
+          mergeRefs(node, inputRef, ref)
+        }} />
     </InputContainer>
   )
 }
 
-export default TextInput;
+export default forwardRef<HTMLInputElement, TextInputProps>(TextInput);
